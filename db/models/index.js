@@ -4,6 +4,13 @@
 // so any other part of the application could call sequelize.model('User')
 // to get access to the User model.
 
-const User = require('./user')
+const db = require('../../db/index');
+const Star = require('./star');
+const Wish = require('./wish');
 
-module.exports = {User}
+module.exports = {Star, Wish};
+
+Star.hasMany(Wish, { as: 'wish' });
+
+
+

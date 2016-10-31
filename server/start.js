@@ -26,7 +26,7 @@ module.exports = app
   .use(express.static(resolve(__dirname, '..', 'public')))
 
   // Serve our api
-  .use('/api', require('./api'))
+  .use('/api', require('./routes/api.js'))
 
   // Send index.html for anything else.
   .get('/*', (_, res) => res.sendFile(resolve(__dirname, '..', 'public', 'index.html')))
@@ -39,7 +39,8 @@ if (module === require.main) {
     process.env.PORT || 1337,
     () => {
       console.log(`--- Started HTTP Server for ${pkg.name} ---`)      
-      console.log(`Listening on ${JSON.stringify(server.address())}`)
+      console.log(`Listening on ${JSON.stringify(server.address())}`);
     }
-  )
+  );
 }
+module.exports = app;
