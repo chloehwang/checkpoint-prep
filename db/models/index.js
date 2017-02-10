@@ -1,16 +1,12 @@
 'use strict';
 
-// Require our models. Running each module registers the model into sequelize
-// so any other part of the application could call sequelize.model('User')
-// to get access to the User model.
+// Require all the models
+	// Running each model (i.e. table) module (i.e. file) registers each model into Sequelize so any other part of the application could call Sequelize.model('user') OR Sequelize.models.user to get access to the `user` model.
+	// This works if we all use the same Sequelize instance (instantiated in and exported from `/db/index.js`)
 
-const db = require('../../db/index');
-const Star = require('./star');
-const Wish = require('./wish');
+const User = require('./user')
 
-module.exports = {Star, Wish};
-
-Star.hasMany(Wish, { as: 'wish' });
+module.exports = {User}
 
 
 
