@@ -41,20 +41,37 @@ export const getAllTasks = (listId) => {
   }
 }
 
-export const taskToggle = (taskId) => {
+export const taskToggle = (taskId, taskStatus) => {
   return function(dispatch, getState) {
-    axios.delete(`/api/tasks/${taskId}`)
-      .then(res => res.data)
-      .then(completedTask => {
-        const newTasks = getState().tasks.tasks.map(task => {
-          if (task.id === completedTask.id) {
-            task.completed = true;
-          }
-          return task
-        })
-        return newTasks
-      })
-      .then(newTasks => dispatch(receiveTasks(newTasks)))
+    if (taskStatus == "true") {
+      axios.put(`/api/tasks/${taskId}`)
+          .then(res => res.data)
+          .then(completedTask => {
+            const newTasks = getState().tasks.tasks.map(task => {
+              if (task.id === completedTask.id) {
+                task.completed = false;
+              }
+              return task
+            })
+            return newTasks
+          })
+          .then(newTasks => dispatch(receiveTasks(newTasks)))
+    } else {
+      axios.delete(`/api/tasks/${taskId}`)
+          .then(res => res.data)
+          .then(completedTask => {
+            const newTasks = getState().tasks.tasks.map(task => {
+              if (task.id === completedTask.id) {
+                task.completed = true;
+              }
+              return task
+            })
+            return newTasks
+          })
+          .then(newTasks => dispatch(receiveTasks(newTasks)))
+    }
+
+
   }
 }
 

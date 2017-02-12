@@ -18,6 +18,7 @@ render (
       <Route path='/' component={AppContainer}>
         <Route path='list' component={List}/>
         <Route path='list/:id' component={SingleList}/>
+        <Route path='list/:id/:taskView' component={SingleList}/>
         <IndexRedirect to='/list' />
       </Route>
     </Provider>

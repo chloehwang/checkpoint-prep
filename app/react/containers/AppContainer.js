@@ -35,10 +35,10 @@ export default class AppContainer extends React.Component {
   }
 
   handleTaskToggle (e) {
-    console.log(completed)
-    // const taskId = e.target.id;
+    const taskStatus = e.target.name;
+    const taskId = e.target.id;
     // store.dispatch(selectedTask(taskId))
-    // store.dispatch(taskToggle(taskId));
+    store.dispatch(taskToggle(taskId, taskStatus));
   }
 
   render() {

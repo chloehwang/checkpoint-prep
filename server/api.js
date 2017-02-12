@@ -56,4 +56,14 @@ api.delete('/tasks/:taskId', (req, res) => {
 
 })
 
+//MARK TASK AS INCOMPLETE
+api.put('/tasks/:taskId', (req, res) => {
+	Task.findById(req.params.taskId)
+	.then( task => {
+		return task.set('completed', false).save()
+	})
+	.then(task => res.send(task))
+
+})
+
 module.exports = api;

@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router'
+
 import store from '../../store.jsx'
 import { findList } from '../../action-creators/list-actions.js'
 import { getAllTasks } from '../../action-creators/task-actions.js'
@@ -12,6 +14,7 @@ export default class List extends React.Component {
       const listId = this.props.routeParams.id;
       store.dispatch(findList(listId));
       store.dispatch(getAllTasks(listId));
+      this.handleInput = this.handleInput.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -23,21 +26,32 @@ export default class List extends React.Component {
   }
 
   handleInput(e) {
-    this.setState({value: event.target.value})
+    this.setState({value: e.target.value})
   }
 
   render() {
-    const isSubmitted = this.props.isSubmitted;
-    const id = this.props.routeParams.id;
+    const listId = this.props.routeParams.id;
     const listName = this.props.lists.selectedList.name;
-    const tasks = this.props.tasks.tasks.map(task => {
+    const handleTaskToggle = this.props.handleTaskToggle;
+    const taskView = this.props.routeParams.taskView;
+    let tasks = this.props.tasks.tasks;
+    let taskStatus;
+
+    if (taskView) {
+      taskStatus = taskView === "complete" ? true : false;
+      tasks = tasks.filter(task => {
+        return task.completed === taskStatus
+      })
+    }
+
+    tasks = tasks.map(task => {
       let completed = task.completed.toString()
 
       return (
-        <tr key={task.id} onChange={(e, completed) => this.props.handleTaskToggle(e, completed)}>
-              <td>{ task.completed.toString() }</td>
+        <tr key={task.id}>
+              <td>{ completed }</td>
               <td>{ completed === "true" ? <strike>{task.name}</strike> : task.name }</td>
-              <td><input id={task.id} className="form-check-input" type="checkbox" /></td>
+              <td><input checked={completed === "true" ? true : false} id={task.id} name={task.completed} onChange={handleTaskToggle} className="form-check-input" type="checkbox" /></td>
         </tr>
       )
     });
@@ -55,6 +69,8 @@ export default class List extends React.Component {
 
         </form>
         <hr/>
+        <h5>View: <Link to={`/list/${listId}`}>All Tasks</Link> | <Link to={`/list/${listId}/complete`}>Completed Tasks</Link> | <Link to={`/list/${listId}/active`}>Active Tasks</Link>
+        </h5><br/>
         <table className='table'>
           <thead>
             <tr>
