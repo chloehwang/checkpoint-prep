@@ -4,7 +4,6 @@ const initialState = {
   tasks: []
 }
 
-
 export default function (state = initialState, action) {
   const newState = Object.assign({}, state);
 

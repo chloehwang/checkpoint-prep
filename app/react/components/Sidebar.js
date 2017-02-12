@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 import { Link } from 'react-router'
 
-
 export default function Sidebar (props) {
-
   const lists = props.lists.map((list) => {
     return (
-      <li key={list.id}><Link to={`/list/${list.id}`} activeStyle={{ color: 'yellow' }}>{list.name}</Link></li>
+      <li key={list.id}>
+        <Link to={`/list/${list.id}`} activeStyle={{ color: 'yellow' }}>{list.name}</Link>
+      </li>
     )
   })
 
@@ -26,10 +26,7 @@ export default function Sidebar (props) {
           {lists}
         </ul>
       </section>
-
     </sidebar>
   )
-
-
 
 }

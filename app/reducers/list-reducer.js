@@ -5,7 +5,6 @@ const initialState = {
   selectedList: {}
 }
 
-
 export default function (state = initialState, action) {
   const newState = Object.assign({}, state);
 

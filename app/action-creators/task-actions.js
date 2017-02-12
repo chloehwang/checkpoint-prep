@@ -1,6 +1,5 @@
 import { ADD_TASK, RECEIVE_TASKS } from '../constants'
-import axios from 'axios';
-import {browserHistory} from 'react-router';
+import axios from 'axios'
 
 export const addTask = (task) => {
   return {
@@ -21,13 +20,9 @@ export const createTask = (task, listId) => {
   return function(dispatch) {
     axios.post(`/api/list/${listId}`, {task})
       .then(res => res.data)
-      .then((task) => {
-        return dispatch(addTask(task));
+      .then(task => {
+        return dispatch(addTask(task))
       })
-      // .then((action) => {
-      //   const path=`/list/${action.list.id}`;
-      //   browserHistory.push(path);
-      // })
   }
 }
 
@@ -35,52 +30,33 @@ export const getAllTasks = (listId) => {
   return function(dispatch) {
     axios.get(`/api/list/${listId}/tasks`)
       .then(res => res.data)
-      .then((allTasks) => {
+      .then(allTasks => {
         dispatch(receiveTasks(allTasks))
       })
   }
 }
 
-export const taskToggle = (taskId, taskStatus) => {
+export const changeTaskStatus = (taskId, status) => {
   return function(dispatch, getState) {
-    if (taskStatus == "true") {
-      axios.put(`/api/tasks/${taskId}`)
-          .then(res => res.data)
-          .then(completedTask => {
-            const newTasks = getState().tasks.tasks.map(task => {
-              if (task.id === completedTask.id) {
-                task.completed = false;
-              }
-              return task
-            })
-            return newTasks
-          })
-          .then(newTasks => dispatch(receiveTasks(newTasks)))
-    } else {
-      axios.delete(`/api/tasks/${taskId}`)
-          .then(res => res.data)
-          .then(completedTask => {
-            const newTasks = getState().tasks.tasks.map(task => {
-              if (task.id === completedTask.id) {
-                task.completed = true;
-              }
-              return task
-            })
-            return newTasks
-          })
-          .then(newTasks => dispatch(receiveTasks(newTasks)))
-    }
-
-
+    const newTasks = getState().tasks.tasks.map(task => {
+      if (task.id === taskId) task.completed = status;
+      return task
+    })
+    dispatch(receiveTasks(newTasks))
   }
 }
 
-// export const findList = (id) => {
-//   return function(dispatch) {
-//     axios.get(`/api/list/${id}`)
-//       .then(res => res.data)
-//       .then((list) => {
-//         dispatch(receiveList(list))
-//       })
-//   }
-// }
+export const taskToggle = (taskId, taskStatus) => {
+  return function(dispatch) {
+    if (taskStatus == "true") {
+      axios.put(`/api/tasks/${taskId}`)
+          .then(res => res.data)
+          .then(completedTask => dispatch(changeTaskStatus(completedTask.id, false)))
+    }
+    else {
+      axios.delete(`/api/tasks/${taskId}`)
+          .then(res => res.data)
+          .then(completedTask => dispatch(changeTaskStatus(completedTask.id, true)))
+    }
+  }
+}

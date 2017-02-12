@@ -9,7 +9,7 @@ const Task = require('./task')
 
 List.hasMany(Task);
 
-module.exports = { List, Task}
+module.exports = { List, Task }
 
 
 
