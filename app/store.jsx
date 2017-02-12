@@ -1,6 +1,8 @@
 import { createStore, applyMiddleware } from 'redux'
-import rootReducer from './reducers'
+import { combineReducers } from 'redux'
+import listReducer from './reducers/list-reducer.js'
 import creatLogger from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 
-export default createStore(rootReducer, applyMiddleware(creatLogger(), thunkMiddleware))
+
+export default createStore(listReducer, applyMiddleware(creatLogger(), thunkMiddleware))
