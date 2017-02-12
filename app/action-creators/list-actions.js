@@ -9,9 +9,10 @@ export const addList = (list) => {
   }
 }
 
-export const removeList = () => {
+export const removeList = (listId) => {
   return {
-    type: REMOVE_LIST
+    type: REMOVE_LIST,
+    listId
   }
 }
 
@@ -47,8 +48,8 @@ export const deleteList = (listId) => {
   return function(dispatch) {
     axios.delete(`/api/list/${listId}`)
       .then(res => res.data)
-      .then((list) => {
-        return dispatch(removeList());
+      .then(() => {
+        return dispatch(removeList(listId));
       })
       .then(() => {
         const path=`/list`;

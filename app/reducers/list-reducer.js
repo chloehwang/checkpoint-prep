@@ -16,6 +16,7 @@ export default function (state = initialState, action) {
 
     case REMOVE_LIST:
       newState.selectedList = {};
+      newState.lists = newState.lists.filter(list => list.id !== +action.listId);
       break;
 
     case RECEIVE_LISTS:
