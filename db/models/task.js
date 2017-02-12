@@ -5,5 +5,8 @@ var db = require('../index.js')
 
 module.exports = db.define('task', {
   name: Sequelize.STRING,
-  completed: Sequelize.BOOLEAN
+  completed: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 })

@@ -6,7 +6,7 @@ export default function Sidebar (props) {
 
   const lists = props.lists.map((list) => {
     return (
-      <li key={list.id}><Link to={`/list/${list.id}`}>{list.name}</Link></li>
+      <li key={list.id}><Link to={`/list/${list.id}`} activeStyle={{ color: 'yellow' }}>{list.name}</Link></li>
     )
   })
 
@@ -14,7 +14,7 @@ export default function Sidebar (props) {
     <sidebar>
       <section>
         <h4 className="menu-item">
-          <Link to='/list'>Make a To-Do List</Link>
+          <Link to='/list' activeStyle={{ color: 'yellow' }}>Make a To-Do List</Link>
         </h4>
       </section>
       <hr />

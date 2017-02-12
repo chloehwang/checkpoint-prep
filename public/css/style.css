@@ -8,6 +8,10 @@ body {
 #main {
   padding-left: 0; }
 
+#inlineFormInput{
+  width: 400px;
+}
+
 sidebar {
   position: fixed;
   left: 0;
