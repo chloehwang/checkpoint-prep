@@ -31,6 +31,14 @@ api.post('/list', (req, res) => {
 	.then( list => res.send(list))
 })
 
+//DELETE A LIST
+api.delete('/list/:id', (req, res) => {
+	List.destroy({where: {
+		id: req.params.id}
+	})
+	.then(res.end())
+})
+
 //CREATE A TASK IN A LIST
 api.post('/list/:id', (req, res) => {
 	Task.create({

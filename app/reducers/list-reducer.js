@@ -1,4 +1,4 @@
-import { ADD_LIST, RECEIVE_LIST, RECEIVE_LISTS } from '../constants'
+import { ADD_LIST, RECEIVE_LIST, RECEIVE_LISTS, REMOVE_LIST } from '../constants'
 
 const initialState = {
   lists: [],
@@ -12,6 +12,10 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_LIST:
       newState.lists = [...newState.lists, action.list];
+      break;
+
+    case REMOVE_LIST:
+      newState.selectedList = {};
       break;
 
     case RECEIVE_LISTS:

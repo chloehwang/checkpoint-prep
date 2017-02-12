@@ -1,4 +1,4 @@
-import { ADD_LIST, RECEIVE_LISTS, RECEIVE_LIST } from '../constants'
+import { ADD_LIST, RECEIVE_LISTS, RECEIVE_LIST, REMOVE_LIST } from '../constants'
 import axios from 'axios';
 import {browserHistory} from 'react-router';
 
@@ -6,6 +6,12 @@ export const addList = (list) => {
   return {
     type: ADD_LIST,
     list
+  }
+}
+
+export const removeList = () => {
+  return {
+    type: REMOVE_LIST
   }
 }
 
@@ -32,6 +38,20 @@ export const createList = (name) => {
       })
       .then((action) => {
         const path=`/list/${action.list.id}`;
+        browserHistory.push(path);
+      })
+  }
+}
+
+export const deleteList = (listId) => {
+  return function(dispatch) {
+    axios.delete(`/api/list/${listId}`)
+      .then(res => res.data)
+      .then((list) => {
+        return dispatch(removeList());
+      })
+      .then(() => {
+        const path=`/list`;
         browserHistory.push(path);
       })
   }

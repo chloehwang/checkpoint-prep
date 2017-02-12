@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 
 import store from '../../store.jsx'
-import { findList } from '../../action-creators/list-actions.js'
+import { findList, deleteList } from '../../action-creators/list-actions.js'
 import { getAllTasks } from '../../action-creators/task-actions.js'
 
 export default class List extends React.Component {
@@ -18,6 +18,10 @@ export default class List extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
+    if(nextProps.tasks.tasks !== this.props.tasks.tasks) {
+      this.setState({value: ''})
+    }
     if(nextProps.params.id !== this.props.routeParams.id) {
       const listId = nextProps.params.id;
       store.dispatch(findList(listId));
@@ -59,7 +63,7 @@ export default class List extends React.Component {
 
     return (
       <div>
-        <h2>{listName}</h2>
+        <h2>{listName}</h2> <button className="btn  btn-danger btn-circle" onClick={()=> store.dispatch(deleteList(listId)) }>x</button>
         <hr/>
         <h5>Add a Task</h5>
         <form className="form-inline" onSubmit={this.props.handleTaskSubmit}>
@@ -69,7 +73,7 @@ export default class List extends React.Component {
 
         </form>
         <hr/>
-        <h5>View: <Link to={`/list/${listId}`}>All Tasks</Link> | <Link to={`/list/${listId}/complete`}>Completed Tasks</Link> | <Link to={`/list/${listId}/active`}>Active Tasks</Link>
+        <h5>View: <Link to={`/list/${listId}`} activeStyle={{ color: 'yellow' }}>All Tasks</Link> | <Link to={`/list/${listId}/complete`} activeStyle={{ color: 'yellow' }}>Completed Tasks</Link> | <Link to={`/list/${listId}/active`} activeStyle={{ color: 'yellow' }}>Active Tasks</Link>
         </h5><br/>
         <table className='table'>
           <thead>
