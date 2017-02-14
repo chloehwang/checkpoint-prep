@@ -14,12 +14,10 @@ import { receiveLists, getAllLists } from './action-creators/list-actions'
 
 //if we need db data before site load, we need to make the axios call happen in the onEnter function. If we just do store.dispatch in onEnter fn, the action will be dispatched, but code will keep being processed without waiting for axios data to get back. So it will go on to render components w/o waiting, and some of those components will rely on axios data that hasn't returned yet.
 //to make App wait until onEnter fn has finished running, use callback()
-const onAppEnter = function (nextRouterState, replace, callback) {
+const onAppEnter = function (nextState, replace, callback) {
   axios.get('/api/list')
       .then(res => res.data)
-      .then(allLists => {
-       store.dispatch(receiveLists(allLists))
-      })
+      .then(lists => store.dispatch(receiveLists(lists)))
       .then(() => callback())
 };
 
