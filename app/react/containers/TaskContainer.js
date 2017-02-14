@@ -1,7 +1,7 @@
 import React from 'react'
 
-import TaskInput from './TaskInput'
-import Tasks from './Tasks'
+import TaskInput from '../components/TaskInput'
+import Tasks from '../components/Tasks'
 import store from '../../store.jsx'
 import { findList, deleteList } from '../../action-creators/list-actions.js'
 import { getAllTasks } from '../../action-creators/task-actions.js'
@@ -29,6 +29,20 @@ export default class TaskContainer extends React.Component {
       store.dispatch(getAllTasks(listId));
     }
   }
+
+  handleTaskSubmit (e) {
+    e.preventDefault();
+    const listId = this.state.lists.selectedList.id;
+    const task = e.target.taskName.value;
+    store.dispatch(createTask(task, listId));
+  }
+
+  handleTaskToggle (e) {
+    const taskStatus = e.target.name;
+    const taskId = e.target.id;
+    store.dispatch(taskToggle(taskId, taskStatus));
+  }
+
 
   handleInput(e) {
     this.setState({value: e.target.value});

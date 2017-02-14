@@ -2,6 +2,13 @@ import React from 'react'
 
 export default function List (props) {
 
+  // handleListSubmit (e) {
+  //   e.preventDefault();
+  //   const name = e.target.listName.value;
+  //   store.dispatch(createList(name));
+  // }
+
+
   return (
     <div className="well">
       <form onSubmit={props.handleListSubmit}>
