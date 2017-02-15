@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function TaskInput (props) {
-
   return (
     <form className="form-inline" onSubmit={props.handleTaskSubmit}>
       <input
@@ -14,5 +13,4 @@ export default function TaskInput (props) {
       <button type="submit" className="btn btn-success">Submit</button>
     </form>
   )
-
 }

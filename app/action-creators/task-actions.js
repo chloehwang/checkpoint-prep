@@ -15,23 +15,12 @@ export const receiveTasks = (tasks) => {
   }
 }
 
-
 export const createTask = (task, listId) => {
   return function(dispatch) {
     axios.post(`/api/list/${listId}`, {task})
       .then(res => res.data)
       .then(task => {
         return dispatch(addTask(task))
-      })
-  }
-}
-
-export const getAllTasks = (listId) => {
-  return function(dispatch) {
-    axios.get(`/api/list/${listId}/tasks`)
-      .then(res => res.data)
-      .then(allTasks => {
-        dispatch(receiveTasks(allTasks))
       })
   }
 }

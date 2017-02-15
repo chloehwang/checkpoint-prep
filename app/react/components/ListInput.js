@@ -1,14 +1,7 @@
 import React from 'react'
 
-export default function List (props) {
-
-  // handleListSubmit (e) {
-  //   e.preventDefault();
-  //   const name = e.target.listName.value;
-  //   store.dispatch(createList(name));
-  // }
-
-
+//"dumb" components rendered by containers are responsible for styling, display
+export default (props) => {
   return (
     <div className="well">
       <form onSubmit={props.handleListSubmit}>
@@ -31,5 +24,7 @@ export default function List (props) {
       </form>
     </div>
   )
-
 }
+
+
+

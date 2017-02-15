@@ -1,78 +1,72 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import TaskInput from '../components/TaskInput'
 import Tasks from '../components/Tasks'
-import store from '../../store.jsx'
-import { findList, deleteList } from '../../action-creators/list-actions.js'
-import { getAllTasks } from '../../action-creators/task-actions.js'
 
-export default class TaskContainer extends React.Component {
-  constructor(props) {
-    super(props);
+import { createTask, taskToggle } from '../../action-creators/task-actions.js'
+
+const filterTasks = (tasks, view) => {
+  if (!view) return tasks;
+  const complete = view === "complete";
+  return tasks.filter(task => task.completed === complete)
+}
+
+export default connect(
+  (state, ownProps) => {
+    return {
+      listId: ownProps.listId,
+      tasks: filterTasks(state.tasks.tasks, ownProps.taskView)
+    }
+  },
+  (dispatch) => {
+    return {
+      create: (task, listId) => dispatch(createTask(task, listId)),
+      toggle: (taskId, taskStatus) => dispatch(taskToggle(taskId, taskStatus))
+      }
+  }
+)(class extends React.Component {
+  constructor () {
+    super()
     this.state = {value: ''};
     this.handleInput = this.handleInput.bind(this);
+    this.handleTaskSubmit = this.handleTaskSubmit.bind(this);
+    this.handleTaskToggle = this.handleTaskToggle.bind(this);
   }
-
-  componentDidMount() {
-    const listId = this.props.routeParams.id;
-    store.dispatch(findList(listId));
-    store.dispatch(getAllTasks(listId));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.tasks.tasks !== this.props.tasks.tasks) {
-      this.setState({value: ''});
-    }
-    if (nextProps.params.id !== this.props.routeParams.id) {
-      const listId = nextProps.params.id;
-      store.dispatch(findList(listId));
-      store.dispatch(getAllTasks(listId));
-    }
-  }
-
-  handleTaskSubmit (e) {
-    e.preventDefault();
-    const listId = this.state.lists.selectedList.id;
-    const task = e.target.taskName.value;
-    store.dispatch(createTask(task, listId));
-  }
-
-  handleTaskToggle (e) {
-    const taskStatus = e.target.name;
-    const taskId = e.target.id;
-    store.dispatch(taskToggle(taskId, taskStatus));
-  }
-
 
   handleInput(e) {
     this.setState({value: e.target.value});
   }
 
-  render() {
-    const listId = this.props.routeParams.id;
-    const listName = this.props.lists.selectedList.name;
+  handleTaskSubmit (e) {
+    e.preventDefault();
+    const listId = this.props.listId;
+    const task = e.target.taskName.value;
+    this.setState({value: ""});
+    this.props.create(task, listId);
+  }
 
+  handleTaskToggle (e) {
+    const taskStatus = e.target.name;
+    const taskId = e.target.id;
+    this.props.toggle(taskId, taskStatus);
+  }
+
+  render() {
     return (
       <div>
-        <h2>{listName}</h2>
-        <button className="btn  btn-danger btn-circle" onClick={() => store.dispatch(deleteList(listId)) }>x</button>
-        <hr />
-
-        <h5>Add a Task</h5>
         <TaskInput
-          handleTaskSubmit={this.props.handleTaskSubmit}
+          handleTaskSubmit={this.handleTaskSubmit}
           handleInput={this.handleInput}
           value={this.state.value}
         />
         <hr/>
 
         <Tasks
-          listId = {this.props.routeParams.id}
-          handleTaskToggle = {this.props.handleTaskToggle}
-          taskView = {this.props.routeParams.taskView}
-          tasks = {this.props.tasks.tasks}
+          listId = {this.props.listId}
+          handleTaskToggle = {this.handleTaskToggle}
+          tasks = {this.props.tasks}
         />
       </div>
       )
   }
-}
+})

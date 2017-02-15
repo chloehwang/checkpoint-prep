@@ -50,6 +50,7 @@ api.post('/list/:id', (req, res) => {
 
 //GET ALL TASKS FOR A LIST
 api.get('/list/:id/tasks', (req, res) => {
+	console.log('hi')
 	Task.findAll({where: {listId: req.params.id}})
 	.then( tasks => res.send(tasks))
 })
